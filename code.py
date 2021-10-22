@@ -39,11 +39,34 @@ def display_tree(root_node):
             display_tree(node)
     return None
 
-def get_leaves(root_node):
-    return None
+def get_leaves(node,array):
+    if node.is_leaf() == True:
+        array.append(node)
+    else:
+        for node_ in node.nodes_sons:
+            get_leaves(node_,array)
+    return array
 
-def display_1_way(root_node):
-    return None
+def get_path_from_root_to_leave(node):
+    towns_array = []
+    while node != None:
+        towns_array.append(node.town_name + ' (' + str(node.cumulated_time) + ', ' + str(node.cumulated_distance) + ') -> ')
+        node = node.parent_node
+    return towns_array[::-1]
+
+def display_1_way(towns_array):
+    str = ''
+    for town in towns_array:
+        str += town
+    return str
+
+def return_1_way(leaves,arrival_town):
+    for leave in leaves:
+        if leave.town_name == arrival_town:
+            towns_array = get_path_from_root_to_leave(leave)
+            way = display_1_way(towns_array)
+            break
+    return way
 
 def main():
     menu_selection = -1
@@ -59,11 +82,13 @@ def main():
     root_node = Node(start_town,0,0,0,[start_town],None)
     build_tree(root_node,arrival_town,max_depth,connections)
 
+    leaves = get_leaves(root_node,[])
+
     print('\nMenu: \n1- display a way \n2- display all ways \n3- display the shortest way \n4- display the fastest way \n5- display the tree \n6- Leave program \n')
-    while menu_selection != 6:
+    while menu_selection != '6':
         menu_selection = input('Select a menu option: ')
         if menu_selection == '1':
-            print('To Do')
+            print(return_1_way(leaves,arrival_town)[:-3])
         elif menu_selection == '2':
             print('To Do')
         elif menu_selection == '3':
