@@ -13,7 +13,7 @@ def open_connections_file(file_name):
     file['duree'] = array
     return file
 
-def build_tree(current_node,arrival_town,max_depth,connections):
+def build_tree(current_node, arrival_town, max_depth, connections):
     current_node.get_destinations(connections)
     current_node.is_divisible(max_depth,arrival_town)
     if current_node.is_divisible == False:
@@ -30,16 +30,8 @@ def build_tree(current_node,arrival_town,max_depth,connections):
                                                ))
             build_tree(current_node.nodes_sons[index],arrival_town,max_depth,connections)
             index += 1
-            
-def display_tree(root_node):
-    offset = '   ' * root_node.depth
-    print(root_node.display_node(offset))
-    if root_node.is_leaf() == False:
-        for node in root_node.nodes_sons:
-            display_tree(node)
-    return None
 
-def get_leaves(node,array):
+def get_leaves(node, array):
     if node.is_leaf() == True:
         array.append(node)
     else:
@@ -60,13 +52,38 @@ def display_1_way(towns_array):
         str += town
     return str
 
-def return_1_way(leaves,arrival_town):
+def return_1_way(leaves, arrival_town):
     for leave in leaves:
         if leave.town_name == arrival_town:
             towns_array = get_path_from_root_to_leave(leave)
             way = display_1_way(towns_array)
             break
     return way
+
+def return_all_ways(leaves, arrival_town):
+    ways = []
+    for leave in leaves:
+        if leave.town_name == arrival_town:
+            towns_array = get_path_from_root_to_leave(leave)
+            ways.append(display_1_way(towns_array))
+    return ways
+
+def return_shortest_way(leaves, arrival_town):
+    shortest_way = Node(arrival_town,999999,999999,0,[],None)
+    for leave in leaves:
+        if leave.town_name == arrival_town and leave.cumulated_distance < shortest_way.cumulated_distance:
+            print(leave.town_name)
+            shortest_way = leave
+    towns_array = get_path_from_root_to_leave(shortest_way)
+    return display_1_way(towns_array)
+
+def display_tree(root_node):
+    offset = '   ' * root_node.depth
+    print(root_node.display_node(offset))
+    if root_node.is_leaf() == False:
+        for node in root_node.nodes_sons:
+            display_tree(node)
+    return None
 
 def main():
     menu_selection = -1
@@ -88,11 +105,16 @@ def main():
     while menu_selection != '6':
         menu_selection = input('Select a menu option: ')
         if menu_selection == '1':
-            print(return_1_way(leaves,arrival_town)[:-3])
+            # 1 path
+            print(return_1_way(leaves, arrival_town)[:-3])
         elif menu_selection == '2':
-            print('To Do')
+            # all paths
+            ways = return_all_ways(leaves, arrival_town)
+            for way in ways:
+                print(way[:-3])
         elif menu_selection == '3':
-            print('To Do')
+            # shortest path
+            print(return_shortest_way(leaves, arrival_town)[:-3])
         elif menu_selection == '4':
             print('To Do')
         elif menu_selection == '5':
