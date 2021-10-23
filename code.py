@@ -108,7 +108,7 @@ def main():
 
     leaves = get_leaves(root_node,[])
 
-    print('\nMenu: \n1- display a way \n2- display all ways \n3- display the shortest way \n4- display the fastest way \n5- display the tree \n6- Leave program \n')
+    print('\nMenu: \n1- display a path \n2- display all paths \n3- display the shortest path \n4- display the fastest path \n5- display the tree \n6- Leave program \n')
     while menu_selection != '6':
         menu_selection = input('Select a menu option: ')
         if menu_selection == '1':
