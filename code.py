@@ -72,9 +72,16 @@ def return_shortest_way(leaves, arrival_town):
     shortest_way = Node(arrival_town,999999,999999,0,[],None)
     for leave in leaves:
         if leave.town_name == arrival_town and leave.cumulated_distance < shortest_way.cumulated_distance:
-            print(leave.town_name)
             shortest_way = leave
     towns_array = get_path_from_root_to_leave(shortest_way)
+    return display_1_way(towns_array)
+
+def return_fastest_path(leaves, arrival_town):
+    fastest_path = Node(arrival_town,999999,999999,0,[],None)
+    for leave in leaves:
+        if leave.town_name == arrival_town and leave.cumulated_time < fastest_path.cumulated_time:
+            fastest_path = leave
+    towns_array = get_path_from_root_to_leave(fastest_path)
     return display_1_way(towns_array)
 
 def display_tree(root_node):
@@ -109,15 +116,17 @@ def main():
             print(return_1_way(leaves, arrival_town)[:-3])
         elif menu_selection == '2':
             # all paths
-            ways = return_all_ways(leaves, arrival_town)
-            for way in ways:
-                print(way[:-3])
+            paths = return_all_ways(leaves, arrival_town)
+            for path in paths:
+                print(path[:-3])
         elif menu_selection == '3':
             # shortest path
             print(return_shortest_way(leaves, arrival_town)[:-3])
         elif menu_selection == '4':
-            print('To Do')
+            # fastest path
+            print(return_fastest_path(leaves, arrival_town)[:-3])
         elif menu_selection == '5':
+            # display tree
             display_tree(root_node)
         else:
             print('Leaving the program')
